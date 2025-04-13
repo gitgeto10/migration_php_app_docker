@@ -4,5 +4,5 @@ session_unset(); // Supprime toutes les variables de session
 session_destroy(); // Détruit la session
 
 // Redirige vers la page de connexion
-header("Location: admin_login.php");
+header("Location: index.php");
 exit();
