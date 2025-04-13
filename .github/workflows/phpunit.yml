@@ -1,29 +1,39 @@
-name: Run PHPUnit Tests
+name: Tests avec Docker
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  phpunit:
+  php-tests:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testdb
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup PHP
+      - name: Set up PHP with Composer
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
+          extensions: pdo_mysql
+          coverage: none
 
       - name: Install Composer dependencies
-        run: |
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          php composer-setup.php
-          php composer.phar install
+        run: composer install --no-interaction
 
-      - name: Run PHPUnit tests
-        run: ./vendor/bin/phpunit tests/
+      - name: Attendre MySQL (facultatif)
+        run: sleep 15
+
+      - name: Run PHPUnit
+        run: ./vendor/bin/phpunit tests
