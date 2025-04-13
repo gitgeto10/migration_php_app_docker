@@ -22,17 +22,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup PHP with Composer
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          tools: composer
+
+      - name: Install Composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php
+          php -r "unlink('composer-setup.php');"
 
       - name: Install dependencies
-        run: composer install
+        run: php composer.phar install
 
       - name: Wait for MySQL
-        run: sleep 20
+        run: sleep 15
 
       - name: Run PHPUnit tests
         run: ./vendor/bin/phpunit tests
+        env:
+          DB_HOST: 127.0.0.1
