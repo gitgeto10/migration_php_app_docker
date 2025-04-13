@@ -5,15 +5,14 @@ class DatabaseConnectionTest extends TestCase
 {
     public function testDatabaseConnection()
     {
-        $host = 'db'; // le nom du service docker
-        $db   = 'testdb';
+        $host = 'db';
+        $db = 'testdb';
         $user = 'root';
         $pass = 'root';
-        $dsn = "mysql:host=$host;dbname=$db";
 
         try {
-            $pdo = new PDO($dsn, $user, $pass);
-            $this->assertInstanceOf(PDO::class, $pdo);
+            $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+            $this->assertTrue(true); // Connexion réussie
         } catch (PDOException $e) {
             $this->fail("Échec de connexion DB: " . $e->getMessage());
         }

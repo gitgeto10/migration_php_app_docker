@@ -1,10 +1,7 @@
-name: Tests avec Docker
-
-on: [push, pull_request]
-
 jobs:
-  php-tests:
+  test:
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:5.7
@@ -22,18 +19,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up PHP with Composer
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
-          extensions: pdo_mysql
-          coverage: none
+          php-version: '8.0'
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction
+      - name: Install Composer
+        run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+             php composer-setup.php
+             php -r "unlink('composer-setup.php');"
 
-      - name: Attendre MySQL (facultatif)
+      - name: Install Dependencies
+        run: php composer.phar install
+
+      - name: Wait for DB
         run: sleep 15
 
-      - name: Run PHPUnit
+      - name: Run PHPUnit tests
         run: ./vendor/bin/phpunit tests
