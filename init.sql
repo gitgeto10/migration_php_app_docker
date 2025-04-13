@@ -25,6 +25,6 @@ INSERT INTO admins (username, password) VALUES ('admin', 'adminpass');
 INSERT INTO users (first_name, last_name, email, phone, address, city, date_of_birth) VALUES
 ('Ahmed', 'El Yacoubi', 'ahmed@example.com', '0601020304', '123 rue Mohammed V, Casablanca', 'Casablanca', '1990-05-12'),
 ('Mouna', 'Benjelloun', 'mouna@example.com', '0611122233', '456 avenue Hassan II, Marrakech', 'Marrakech', '1992-07-20'),
-('Youssef', 'Ait Ouazzou', 'youssef@example.com', '0655443321', '789 boulevard Abdelmoumen, Rabat', 'Rabat', '1985-01-30'),
+('Yousef', 'Ait Ouazzou', 'youssef@example.com', '0655443321', '789 boulevard Abdelmoumen, Rabat', 'Rabat', '1985-01-30'),
 ('Sara', 'Lahlou', 'sara@example.com', '0622334455', '101 rue Prince Moulay Abdellah, Fès', 'Fès', '1995-11-15'),
 ('Mustapha', 'El Mansouri', 'mustapha@example.com', '0688776655', '202 avenue Mohammed VI, Agadir', 'Agadir', '1988-03-25');
