@@ -1,42 +1,29 @@
-name: PHP Unit Tests
+name: Run PHPUnit Tests
 
 on:
   push:
-    branches:
-      - main  
+    branches: [ main ]
   pull_request:
-    branches:
-      - main  
+    branches: [ main ]
 
 jobs:
-  test:
+  phpunit:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
-      - name: Check out the code
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          extensions: pdo,pdo_mysql
 
-      - name: Install dependencies
+      - name: Install Composer dependencies
         run: |
-          curl -sS https://getcomposer.org/installer | php
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php
           php composer.phar install
 
       - name: Run PHPUnit tests
-        run: |
-          ./vendor/bin/phpunit
+        run: ./vendor/bin/phpunit tests/
