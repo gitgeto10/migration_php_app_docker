@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    container_name: php-web
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    container_name: php-mysql
