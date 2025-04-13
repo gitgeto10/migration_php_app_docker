@@ -19,3 +19,16 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: php-mysql
+    ports:
+      - "3306:3306"
+
+  test:
+    build: .
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    working_dir: /var/www/html
+    command: >
+      sh -c "composer install && ./vendor/bin/phpunit tests"
+    container_name: phpunit-test
